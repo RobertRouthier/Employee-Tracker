@@ -1,6 +1,8 @@
 const inquirer = require("inquirer");
 const db = require("./db/index.js");
 
+console.log("PID: ", process.pid);
+
 const startMenu = {
   name: "functionality",
   message: "Hello, welcome to employee manager, what would you like to do?",
@@ -14,11 +16,12 @@ const startMenu = {
 };
 
 const showAllEmployees = () => {
-  
-  db.query(`SELECT e1.id as EMP_ID, CONCAT(e1.first_name, ' ', e1.last_name) as Name, title as role, 
+  db.query(
+    `SELECT e1.id as EMP_ID, CONCAT(e1.first_name, ' ', e1.last_name) as Name, title as role, 
   salary, department.name as department, IF NULL(CONCAT(e2.first_name, ' ', e2.last_name), 'No Manager') as Manager FROM employee e1 LEFT JOIN role 
   ON e1.role_id=role.id LEFT JOIN department ON role.department_id=department.id
-  LEFT JOIN employee e2 ON e1.manager_id=e2.id `).then((results) => {
+  LEFT JOIN employee e2 ON e1.manager_id=e2.id`
+  ).then((results) => {
     console.log("--------------  EMPLOYEES  --------------");
     console.table(results);
     console.log("--------------  EMPLOYEES  --------------");
@@ -28,9 +31,9 @@ const showAllEmployees = () => {
 };
 
 const addEmployee = () => {
-
-  db.query(`SELECT id, first_name, last_name FROM employee`).then(
-    (managers) => {
+  db.query(`SELECT id, first_name, last_name FROM employee`)
+    .then((managers) => {
+      console.log("Managers: ", managers);
       const managerChoices = managers.map((man) => {
         return {
           name: `${man.first_name} ${man.last_name}`,
@@ -44,7 +47,7 @@ const addEmployee = () => {
             value: role.id,
           };
         });
-        
+
         const addEmployeePrompt = [
           {
             name: "first_name",
@@ -64,10 +67,7 @@ const addEmployee = () => {
             name: "manager_id",
             message: "Who is this employee's manager?",
             type: "list",
-            choices: [
-              ...managerChoices,
-              { name: "No Manager", value: null },
-            ],
+            choices: [...managerChoices, { name: "No Manager", value: null }],
           },
         ];
 
@@ -79,15 +79,16 @@ const addEmployee = () => {
           );
         });
       });
-    }
-  );
-  inquirer.prompt()
+    })
+    .catch(function (err) {
+      console.log("Error: ", err);
+    });
+  // inquirer.prompt();
 };
 
 function start() {
   inquirer.prompt(startMenu).then((response) => {
-
-    
+    console.log("Response: ", response);
     switch (response.functionality) {
       case "Show All Employees":
         return showAllEmployees();
