@@ -18,9 +18,10 @@ const startMenu = {
 const showAllEmployees = () => {
   db.query(
     `SELECT e1.id as EMP_ID, CONCAT(e1.first_name, ' ', e1.last_name) as Name, title as role, 
-  salary, department.name as department, IF NULL(CONCAT(e2.first_name, ' ', e2.last_name), 'No Manager') as Manager FROM employee e1 LEFT JOIN role 
+  salary, department.name as department FROM employee e1 LEFT JOIN role 
   ON e1.role_id=role.id LEFT JOIN department ON role.department_id=department.id
   LEFT JOIN employee e2 ON e1.manager_id=e2.id`
+  
   ).then((results) => {
     console.log("--------------  EMPLOYEES  --------------");
     console.table(results);
