@@ -8,6 +8,10 @@ const startMenu = {
   message: "Hello, welcome to employee manager, what would you like to do?",
   type: "list",
   choices: [
+    "View All Departments",
+    "View All Roles",
+    "Add Department",
+    "Add Role",
     "Add Employee",
     "Update Employee",
     "Show All Employees",
@@ -30,6 +34,33 @@ const showAllEmployees = () => {
     setTimeout(start, 3000);
   });
 };
+
+const viewRoles = () => {
+
+  db.query(`SELECT title as role from employee`)
+    .then((results) => {
+      console.log("--------------  ROLES  --------------");
+      console.table(results);
+      console.log("--------------  ROLES  --------------");
+
+      setTimeout(start, 3000);
+    })
+}
+
+const viewDepartments = () => {
+  db.query(`SELECT department.name as department from employee`)
+    .then((results) => {
+      console.log("--------------  DEPARTMENTS  --------------");
+      console.table(results);
+      console.log("--------------  DEPARTMENTS  --------------");
+
+      setTimeout(start, 3000);
+    })
+}
+
+const addRole = () => {}
+
+const addDepartment = () => {}
 
 const addEmployee = () => {
   db.query(`SELECT id, first_name, last_name FROM employee`)
@@ -200,6 +231,14 @@ function start() {
         return updateEmployee();
       case "Delete an Employee":
         return deleteEmployee();
+      case "Show All Roles":
+        return viewRoles();
+      case "Add Role":
+        return addRole();
+      case "Show All Departments":
+        return viewDepartments();
+      case "Add Department":
+        return addDepartment();
     }
   });
 }
