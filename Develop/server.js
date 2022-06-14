@@ -37,10 +37,10 @@ const showAllEmployees = () => {
 
 const viewRoles = () => {
 
-  db.query(`SELECT title as role from employee`)
-    .then((results) => {
+  db.query(`SELECT title as Role FROM employee`)
+    .then((roles) => {
       console.log("--------------  ROLES  --------------");
-      console.table(results);
+      console.table(roles);
       console.log("--------------  ROLES  --------------");
 
       setTimeout(start, 3000);
@@ -48,10 +48,10 @@ const viewRoles = () => {
 }
 
 const viewDepartments = () => {
-  db.query(`SELECT department.name as department from employee`)
-    .then((results) => {
+  db.query(`SELECT department.name as department FROM employee`)
+    .then((departments) => {
       console.log("--------------  DEPARTMENTS  --------------");
-      console.table(results);
+      console.table(departments);
       console.log("--------------  DEPARTMENTS  --------------");
 
       setTimeout(start, 3000);
