@@ -89,15 +89,17 @@ const addEmployee = () => {
 
 const updateEmployee = () => {
   db.query(`SELECT id FROM employee`)
-    .then((managers) => {
-      console.log('Updating Employee: ');
-      const managerChoices = managers.map((man) => {
+    .then((results) => {
+      console.log('Updating Employee---------');
+      console.table(results);
+      console.log('Updating Employee---------');
+      const employeeChoices = managers.map((man) => {
         return {
           name: `${man.first_name} ${man.last_name}`,
           value: man.id,
         };
       });
-      db.query(`SELECT id, title FROM role`).then((results) => {
+      db.query(`SELECT id, title, first_name, last_name FROM role`).then((results) => {
         const choices = results.map((role) => {
           return {
             name: role.title,
@@ -107,7 +109,7 @@ const updateEmployee = () => {
 
         const updateEmployeePrompt = [
           {
-            name: "first_name",
+            name: "choose_employee",
             message: "What is the employee's new first name?",
           },
           {
